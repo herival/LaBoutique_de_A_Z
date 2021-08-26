@@ -30,7 +30,7 @@
                     {{ address.phone}}
                 </p>
 
-                <a href="#" class="">Modifer</a> | <a href="#" class="">Supprimer</a>
+                <a href="{{ path ('edit_adress' , {id : address.id })}}" class="">Modifer</a> | <a href="{{ path ('remove_adress', {id : address.id })}}" class="">Supprimer</a>
             </div>
         </div>
            

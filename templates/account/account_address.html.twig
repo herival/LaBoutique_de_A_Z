@@ -1,0 +1,46 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Vos Adresse{% endblock %}
+
+{% block content %}
+<a href="{{ path ('add_adress')}}" class="btn btn-info btn-sm float-right">Ajouter une adresse</a>
+<h1> Mes adresses </h1>
+
+
+
+<a href="{{ path ('account')}}">Retour</a>
+
+<hr>
+{% if app.user.addresses | length == 0  %}
+ <p class="text-center"> Vous n'avez pas encore ajouter d'adresse. Pour en ajouter une veuillez <a href="{{ path ('add_adress')}}">Cliquer ici</a></p> 
+ {% else %}
+
+ <div class="row">
+     {% for address in app.user.addresses %}
+     <div class="col-md-4">
+
+        <div class="card" style="width: 18rem;">
+            <div class="card-body">
+                <h5 class="card-title">{{address.name}}</h5>
+                <p class="card-text">
+                    {{ address.address}}, <br/>
+                    {{ address.postal}} - {{ address.city}} - {{ address.country}}, <br/>
+                    {{ address.firstname}} {{ address.lastname}} <br/>
+                    {{ address.company}} <br/>
+                    {{ address.phone}}
+                </p>
+
+                <a href="#" class="">Modifer</a> | <a href="#" class="">Supprimer</a>
+            </div>
+        </div>
+           
+    </div>
+       {% endfor %}
+
+ </div>
+
+
+{% endif %}
+<hr>
+VUE DE MES ADRESSES
+{% endblock %}

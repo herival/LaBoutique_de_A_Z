@@ -30,9 +30,15 @@
                 {{ product.product.name}} <br>
                 <small>{{ product.product.subtitle}}</small>
             </td>
-            <td>x {{ product.quantity}}</td>
+            <td>
+                <a href="{{ path ('decrease', {'id' : product.product.id} )}}"><i class="fa fa-minus"></i></a>
+                {{ product.quantity}}
+                <a href="{{ path ('add_to_cart', {'id': product.product.id })}}"><i class="fa fa-plus"></i></a>
+
+            </td>
             <td>{{ (product.product.price / 100) | number_format(2, ',', '.')}} € </td>
             <td>{{ ((product.product.price / 100) * product.quantity) | number_format(2, ',', '.') }} €</td>
+            <td><a href="{{ path ('delete_to_cart', { 'id' : product.product.id })}}"><i class="fa fa-trash"></i></a></td>
         </tr>
             {% set total = total +  (product.product.price / 100) * product.quantity %}
         {% endfor %}

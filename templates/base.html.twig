@@ -55,8 +55,10 @@
                 <a href="{{ path ('account') }}"> Mon compte <small>({{ app.user.firstname }})</a></small> |  <a href="{{ path ('app_logout') }}">Deconnexion </a>
                 {% else %}
                 <a href="{{ path ('app_login') }}">Connexion </a> |  <a href="{{ path ('register') }}"> Inscription</a>
-               
             {% endif %}
+            <a href="{{ path ('cart') }}" class="ml-1">
+                <i class="fa fa-shopping-cart"></i>
+            </a>
             </div>
 
         </div>
@@ -128,6 +130,7 @@
         <a href="">Privacy</a> . <a href="#">Terms</a>
     </footer>
 </main>
+<script src="https://use.fontawesome.com/aa5f01ae6c.js"></script>
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="{{ asset('assets/js/bootstrap.bundle.js') }} "></script>
 </body>

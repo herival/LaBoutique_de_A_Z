@@ -16,3 +16,10 @@
 .product-container {
     margin-bottom: 125px;
 }
+
+.form-check {
+    background-color: rgb(227, 237, 240);
+    padding: 20px;
+    margin-top: 7px;
+    padding-left: 30px;
+}

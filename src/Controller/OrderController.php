@@ -2,16 +2,18 @@
 
 namespace App\Controller;
 
+use DateTime;
+use Stripe\Stripe;
 use App\Classe\Cart;
 use App\Entity\Order;
-use App\Entity\OrderDetails;
 use App\Form\OrderType;
-use DateTime;
+use App\Entity\OrderDetails;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Stripe\Checkout\Session;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class OrderController extends AbstractController
 {
@@ -70,6 +72,8 @@ class OrderController extends AbstractController
             $em->persist($order);
 
             // enregistrer mes produits
+            $product_for_stripe = [];
+
             foreach ($cart->getFull() as $product) {
                 $orderDetails = new OrderDetails();
                 // dd($product);
@@ -82,14 +86,50 @@ class OrderController extends AbstractController
 
                 $em->persist($orderDetails);
 
+                $product_for_stripe[] =[
+                    'price_data' => [
+                        'currency' => 'eur',
+                        'product_data' => [
+                          'name' => $product['product']->getName(),
+                        ],
+                        'unit_amount' => $product['product']->getPrice(),
+                      ],
+                      'quantity' => $product['quantity'],
+                ];
+
             }
 
-            $em->flush();
+            // $em->flush();
+
+            \Stripe\Stripe::setApiKey('sk_test_51JTmESLKB8SafAqO6ELO7LsCVsJ6lb37f4BkOUDd3ALETuGHa5KTQu09juV5aZW2gb89BsGnEFMR8I4dg0r4eORO00qzr82yOm');  
+ 
+
+            $YOUR_DOMAIN = 'http://127.0.0.1:8000';
+
+            $checkout_session = \Stripe\Checkout\Session::create([
+                'payment_method_types' => ['card'],
+                'line_items' => [
+                    $product_for_stripe
+                ],
+                'mode' => 'payment',
+                'success_url' => 'https://example.com/success',
+                'cancel_url' => 'https://example.com/cancel',
+              ]);
+
+            header("Location: " . $checkout_session->url);
+            // dump($checkout_session->id);
+            // dd($checkout_session);
+
+            // $app->post('/create-checkout-session', function (Request $request, Response $response) {
+            //     $session = \Stripe\Checkout\Session::create([
+
+            //     ]);
 
             return $this->render('order/recap.html.twig', [
                 'cart' => $cart->getFull(),
                 'carrier' => $carriers,
-                'delivery' => $delivery_content
+                'delivery' => $delivery_content,
+                'stripe_checkout_session' => $checkout_session->id
             ]);
 
         }

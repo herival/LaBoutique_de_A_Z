@@ -62,7 +62,9 @@ class OrderController extends AbstractController
 
             // enregistrer ma commande (order)
             $order = new Order();
+            $reference = $date->format('dmY').'-'.uniqid();
             $order->setUser($this->getUser());
+            $order->setReference($reference);
             $order->setCreatedAt($date);
             $order->setCarrierName($carriers->getName());
             $order->setCarrierPrice($carriers->getPrice());
@@ -90,23 +92,14 @@ class OrderController extends AbstractController
 
             }
 
-            // $em->flush();
+            $em->flush();
 
-
-
-            // dump($checkout_session->id);
-            // dd($checkout_session);
-
-            // $app->post('/create-checkout-session', function (Request $request, Response $response) {
-            //     $session = \Stripe\Checkout\Session::create([
-
-            //     ]);
 
             return $this->render('order/recap.html.twig', [
                 'cart' => $cart->getFull(),
                 'carrier' => $carriers,
                 'delivery' => $delivery_content,
-                // 'stripe_checkout_session' => $checkout_session->id
+                'reference' => $order->getReference()
             ]);
 
         }

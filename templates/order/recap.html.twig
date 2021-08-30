@@ -59,40 +59,13 @@
             <strong>Total : </strong> {{ ((total /100) +  carrier.price)| number_format(2, ',', '.') }} € 
             
 
-            <a id="checkout-button" class="btn btn-block btn-success mb-3 mt-3">Payer | {{ ((total /100) +  carrier.price)| number_format(2, ',', '.') }} € </a>
+            <form action="/commande/create-checkout-session/{{reference}}" method="POST">
+                <button type="submit" id="checkout-button" class="btn btn-block btn-success mb-3 mt-3">Payer | {{ ((total /100) +  carrier.price)| number_format(2, ',', '.') }} €</button>
+            </form>
         </div>
     </div>
 
 
 {% endblock %}
 
-{% block script_stripe %}
-<script type="text/javascript">
-    var stripe = Stripe("pk_test_51JTmESLKB8SafAqORGPVucohnCyrb4Z8zWOW5VKDZQthfrVTu9hTeRjwtllHc5wRqXuVATK1w4iPPILQcILuqdp500il6Evkyb");
-    var checkoutButton = document.getElementById("checkout-button");
-
-    checkoutButton.addEventListener("click", function () {
-        fetch("/commande/create-session", {
-            method: "POST",
-        })
-            .then(function(response){
-                return response.json;
-            })
-            .then(function(response){
-                return stripe.redirectToCheckout({ sessionId: response.id });
-            })
-            .then(function(result){
-                if(result.error){
-                    alert(result.error.message);
-                }
-            })
-            .catch(function(error){
-                console.error("Error", error);
-            });
-        
-    });
-</script>
-
-    
-{% endblock script_stripe %}
 

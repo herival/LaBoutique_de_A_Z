@@ -66,18 +66,33 @@
 
 {% endblock %}
 
-{% block script %}
+{% block script_stripe %}
 <script type="text/javascript">
     var stripe = Stripe("pk_test_51JTmESLKB8SafAqORGPVucohnCyrb4Z8zWOW5VKDZQthfrVTu9hTeRjwtllHc5wRqXuVATK1w4iPPILQcILuqdp500il6Evkyb");
     var checkoutButton = document.getElementById("checkout-button");
 
     checkoutButton.addEventListener("click", function () {
-        fetch("/create-session.php", {
+        fetch("/commande/create-session", {
             method: "POST",
         })
-    })
+            .then(function(response){
+                return response.json;
+            })
+            .then(function(response){
+                return stripe.redirectToCheckout({ sessionId: response.id });
+            })
+            .then(function(result){
+                if(result.error){
+                    alert(result.error.message);
+                }
+            })
+            .catch(function(error){
+                console.error("Error", error);
+            });
+        
+    });
 </script>
 
     
-{% endblock script %}
+{% endblock script_stripe %}
 

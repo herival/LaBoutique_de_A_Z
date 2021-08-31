@@ -17,7 +17,7 @@ class StripeCancelController extends AbstractController
             return $this->redirectToRoute('home');
         }
         // envoyer email pour erreur de paiement 
-        
+        dump($order);
         return $this->render('stripe_cancel/index.html.twig', [
             'order' => $order
         ]);

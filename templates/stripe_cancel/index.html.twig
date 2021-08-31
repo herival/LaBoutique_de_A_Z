@@ -2,15 +2,13 @@
 
 {% block title %}Erreur de paiement - La Boutique{% endblock %}
 
-{% block body %}
+{% block content %}
 
-{{ dump(order) }}
 <h2>Erreur de paiement</h2>
 <p>
     Bonjour <strong>{{order.user.firstname}} {{order.user.lastname}}</strong>, <br>
     Il semblerait que votre paiement est échoué pour votre commande n° <strong>{{ order.reference }}</strong> <br>
     Une confirmation d'erreur vient de vous être envoyée à l'adresse <strong>{{ order.user.email}}</strong>
-    <hr>
 </p>
 <hr>
 <a href="{{ path ('order') }}">Réessayer le paiement</a>

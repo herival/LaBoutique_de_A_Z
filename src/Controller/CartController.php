@@ -74,11 +74,14 @@ class CartController extends AbstractController
     public function delete(SessionInterface $session, $id): Response
     {
         $cart = $session->get('cart');
+        $test = 'test';
 
         unset($cart[$id]);
 
         $session->set('cart', $cart);
 
-        return $this->redirectToRoute('cart');
+        return $this->redirectToRoute('cart', [
+            'test'=> $cart
+        ]);
     }
 }
